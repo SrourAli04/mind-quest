@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Http;
 use OpenAI;
 use App\Models\User;
 
-class ChatController extends Controller
+class ChatbotController extends Controller
 {
     public function index()
     {
@@ -19,23 +19,38 @@ class ChatController extends Controller
     {
         $userInput = $request->input('message');
 
-        $currentStage = $request->session()->get('current_stage', 1);
+        // Initialize chat history if it doesn't exist
+        if (!$request->session()->has('chat_history')) {
+            $request->session()->put('chat_history', []);
+        }
 
-
+        // Get the current chat history
+        $chatHistory = $request->session()->get('chat_history');
+        $stage = $request->session()->get('progress_stage', 1);
+        // Send the user input and chat history to the Flask API
         $chatbotResponse = Http::post('http://localhost:5000/chat-cbt-response', [
             'text' => $userInput,
+            'chat_history' => $chatHistory, // Send the chat history
+            'stage' => $stage, // Hardcoded for now
         ]);
-
 
         \Log::info('Chatbot Response:', [$chatbotResponse]);
 
         $cbtResponse = $chatbotResponse->json()['cbt_response'];
         \Log::info('CBT Response:', [$cbtResponse]);
 
+        // Append user input and chatbot response to chat history
+        $chatHistory[] = ['role' => 'user', 'content' => $userInput];
+        $chatHistory[] = ['role' => 'assistant', 'content' => $cbtResponse];
+
+        // Update the session with the new chat history
+        $request->session()->put('chat_history', $chatHistory);
+        $request->session()->put('progress_stage', $chatbotResponse->json()['progress_stage']);
+
         return response()->json([
             'cbt_response' => $cbtResponse,
-
         ]);
+
         // $systemPrompt = $this->getSystemPrompt($currentStage, $emotion);
 
 

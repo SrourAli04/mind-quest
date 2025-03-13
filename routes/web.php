@@ -1,19 +1,19 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ChatbotController;
 
 Route::get('/', function () {
     return view('home');
 });
 
-Route::get('/chatbot', [ChatController::class, 'index'])->name('chatbot');
+Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot');
 
-Route::post('/chat/response', [ChatController::class, 'getResponse'])->name('chat.response');
+Route::post('/chat/response', [ChatbotController::class, 'getResponse'])->name('chat.response');
 
 Route::get('/home', function () {
     return view('home');
 });
 
-Route::get('/chatbottest', [ChatController::class, 'index2']);
-Route::post('/chatbottest/send', [ChatController::class, 'sendMessage']);
+Route::get('/chatbottest', [ChatbotController::class, 'index2']);
+Route::post('/chatbottest/send', [ChatbotController::class, 'sendMessage']);
