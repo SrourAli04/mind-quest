@@ -27,6 +27,7 @@ class ChatbotController extends Controller
         // Get the current chat history
         $chatHistory = $request->session()->get('chat_history');
         $stage = $request->session()->get('progress_stage', 1);
+
         // Send the user input and chat history to the Flask API
         $chatbotResponse = Http::post('http://localhost:5000/chat-cbt-response', [
             'text' => $userInput,
@@ -34,8 +35,10 @@ class ChatbotController extends Controller
             'stage' => $stage, // Hardcoded for now
         ]);
 
+        // debuging the response
         \Log::info('Chatbot Response:', [$chatbotResponse]);
 
+        // Get the chatbot response from the API
         $cbtResponse = $chatbotResponse->json()['cbt_response'];
         \Log::info('CBT Response:', [$cbtResponse]);
 
@@ -50,6 +53,13 @@ class ChatbotController extends Controller
         return response()->json([
             'cbt_response' => $cbtResponse,
         ]);
+
+        // this logic is handled in python but it can be handled here as well
+        // python is chosen because openai documentation are clearere in the open ai api
+        // and we can simplify the logic here to focus on the stage and rewards
+        // altough still we can use it here
+        // ane katabet l comments wla mesh chatgpt 😊
+        // falfel
 
         // $systemPrompt = $this->getSystemPrompt($currentStage, $emotion);
 
@@ -84,7 +94,7 @@ class ChatbotController extends Controller
         //     'current_stage' => $currentStage,
         // ]);
     }
-
+    // this logic is good try to implement
     private function getSystemPrompt($currentStage, $emotion)
     {
         // Define the dynamic quest system
