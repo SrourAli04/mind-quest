@@ -9,7 +9,7 @@ Route::get('/', function () {
 
 Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot');
 
-Route::post('/chat/response', [ChatbotController::class, 'getResponse'])->name('chat.response');
+Route::post('/chat/response', [ChatbotController::class, 'chatResponse'])->name('chat.response');
 
 Route::get('/home', function () {
     return view('home');

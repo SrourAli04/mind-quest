@@ -14,7 +14,37 @@ class ChatbotController extends Controller
         $user = User::find(1);
         return view('chatbot', compact('user'));
     }
+    // to test the other api (testing.py)
+    public function chatResponse(Request $request)
+    {
+        $text = $request->input('message');
+        $user = User::find(1); // Assuming you have authentication set up
+        $stage = session('progress_stage', 1);
+        $quest = session('current_quest', null);
+        $reward_points = session('reward_points', 0);
 
+        \Log::info('Request:', ['chatResponse Entered']);
+
+        $response = Http::post('http://127.0.0.1:5000/chat-cbt-response', [
+            'text' => $text,
+            'user_id' => $user->id ?? null, // Pass user ID
+            'progress_stage' => $stage,
+            'current_quest' => $quest,
+            'reward_points' => $reward_points
+
+        ]);
+        \Log::info('Response:', [$response->getBody()]);
+        $data = json_decode($response->getBody(), true);
+
+        // Store the response from the python api
+        session(['progress_stage' => $data['progress_stage']]);
+        session(['current_quest' => $data['quest']]);
+        session(['reward_points' => $data['reward_points']]);
+
+        return response()->json($data);
+
+    }
+    //main function for getting response from the api
     public function getResponse(Request $request)
     {
         $userInput = $request->input('message');
