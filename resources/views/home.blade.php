@@ -7,8 +7,8 @@
       <h1>Embark on a Journey to Better Mental Health</h1>
       <p>Complete 3-day quests with AI guidance, track your progress, and connect with peers on your path to emotional wellbeing.</p>
       <div>
-        <button class="btn btn-primary">Start a New Quest</button>
-        <button class="btn btn-secondary">Chat with AI Companion</button>
+        <a href="/My_Quests" class="btn btn-primary">Start a New Quest</a>
+        <a href="/chatbot" class="btn btn-secondary">Chat with AI Companion</a>
       </div>
     </section>
 

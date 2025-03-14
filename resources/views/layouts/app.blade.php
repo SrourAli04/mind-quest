@@ -16,11 +16,11 @@
           MindQuest
         </div>
         <div class="nav-links">
-          <a href="/home" class="nav-link active">Home</a>
-          <a href="#" class="nav-link ">My Quests</a>
-          <a href="#" class="nav-link">Progress</a>
-          <a href="#" class="nav-link">Community</a>
-          <a href="/chatbot"  class ="nav-link ">AI Companion</a>
+            <a href="/home" class="nav-link {{ request()->is('home') ? 'active' : '' }}">Home</a>
+            <a href="/My_Quests" class="nav-link {{ request()->is('My_Quests') ? 'active' : '' }}">My Quests</a>
+            <a href="/progress" class="nav-link {{ request()->is('progress') ? 'active' : '' }}">Progress</a>
+            <a href="/community" class="nav-link {{ request()->is('community') ? 'active' : '' }}">Community</a>
+            <a href="/chatbot" class="nav-link {{ request()->is('chatbot') ? 'active' : '' }}">AI Companion</a>
         </div>
         <div>
           <span style="margin-right: 10px;">👤</span>
